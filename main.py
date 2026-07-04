@@ -2,7 +2,50 @@ from flask import Flask, render_template_string, jsonify
 from faker import Faker
 
 app = Flask(__name__)
-fake = Faker("en_US")
+LOCALES = [
+    "en_US",
+    "en_GB",
+    "en_CA",
+    "en_AU",
+    "fr_FR",
+    "de_DE",
+    "es_ES",
+    "it_IT",
+    "pt_BR",
+    "nl_NL",
+    "pl_PL",
+    "ru_RU",
+    "uk_UA",
+    "tr_TR",
+    "el_GR",
+    "cs_CZ",
+    "sv_SE",
+    "fi_FI",
+    "da_DK",
+    "no_NO",
+    "hu_HU",
+    "ro_RO",
+    "sk_SK",
+    "sl_SI",
+    "hr_HR",
+    "bg_BG",
+    "ja_JP",
+    "ko_KR",
+    "zh_CN",
+    "zh_TW",
+    "hi_IN",
+    "bn_BD",
+    "ar_EG",
+    "th_TH",
+    "vi_VN",
+    "id_ID",
+    "ms_MY"
+]
+
+fakers = [Faker(locale) for locale in LOCALES]
+
+def random_name():
+    return random.choice(fakers).name()
 
 HTML = """
 <!DOCTYPE html>
@@ -143,14 +186,14 @@ async function changeName(){
 @app.route("/new-name")
 def new_name():
     return jsonify({
-        "name": fake.name()
+        "name": random_name()
     })
 
 @app.route("/")
 def home():
     return render_template_string(
         HTML,
-        name=fake.name()
+        name=random_name()
     )
 
 if __name__ == "__main__":
