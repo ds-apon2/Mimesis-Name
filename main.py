@@ -39,7 +39,6 @@ LOCALES = [
     "th_TH",
     "vi_VN",
     "id_ID",
-    "ms_MY"
 ]
 
 fakers = [Faker(locale) for locale in LOCALES]
