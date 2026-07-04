@@ -1,6 +1,8 @@
 from flask import Flask, render_template_string, jsonify
 from faker import Faker
+from collections import deque
 import random
+import threading
 
 app = Flask(__name__)
 
@@ -16,10 +18,34 @@ ENGLISH_LOCALES = [
 
 fakers = [Faker(locale) for locale in ENGLISH_LOCALES]
 
+# Keeps track of recently generated names so the same one
+# doesn't pop up again too soon. Thread-safe for Flask's
+# multi-threaded dev/prod servers.
+RECENT_HISTORY_SIZE = 50
+MAX_GENERATION_ATTEMPTS = 20
 
-def random_name():
+_recent_names = deque(maxlen=RECENT_HISTORY_SIZE)
+_recent_names_lock = threading.Lock()
+
+
+def _generate_candidate():
     fake = random.choice(fakers)
     return f"{fake.first_name()} {fake.last_name()}"
+
+
+def random_name():
+    with _recent_names_lock:
+        for _ in range(MAX_GENERATION_ATTEMPTS):
+            candidate = _generate_candidate()
+            if candidate not in _recent_names:
+                _recent_names.append(candidate)
+                return candidate
+
+        # Fallback: if we somehow can't find a fresh name
+        # (extremely unlikely), just return the last candidate
+        # generated rather than looping forever.
+        _recent_names.append(candidate)
+        return candidate
 
 
 HTML = """
