@@ -1,5 +1,6 @@
 from flask import Flask, render_template_string, jsonify
 from faker import Faker
+import random
 
 app = Flask(__name__)
 LOCALES = [
