@@ -3,49 +3,22 @@ from faker import Faker
 import random
 
 app = Flask(__name__)
-LOCALES = [
+
+ENGLISH_LOCALES = [
     "en_US",
     "en_GB",
     "en_CA",
     "en_AU",
-    "fr_FR",
-    "de_DE",
-    "es_ES",
-    "it_IT",
-    "pt_BR",
-    "nl_NL",
-    "pl_PL",
-    "ru_RU",
-    "uk_UA",
-    "tr_TR",
-    "el_GR",
-    "cs_CZ",
-    "sv_SE",
-    "fi_FI",
-    "da_DK",
-    "no_NO",
-    "hu_HU",
-    "ro_RO",
-    "sk_SK",
-    "sl_SI",
-    "hr_HR",
-    "bg_BG",
-    "ja_JP",
-    "ko_KR",
-    "zh_CN",
-    "zh_TW",
-    "hi_IN",
-    "bn_BD",
-    "ar_EG",
-    "th_TH",
-    "vi_VN",
-    "id_ID",
+    "en_NZ",
+    "en_IE",
+    "en_IN"
 ]
 
-fakers = [Faker(locale) for locale in LOCALES]
+fakers = [Faker(locale) for locale in ENGLISH_LOCALES]
 
 def random_name():
-    return random.choice(fakers).name()
+    fake = random.choice(fakers)
+    return f"{fake.first_name()} {fake.last_name()}"
 
 HTML = """
 <!DOCTYPE html>
