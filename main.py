@@ -8,10 +8,10 @@ app = Flask(__name__)
 # All supported locales
 LOCALES = [
     Locale.EN,
-    Locale.EN_US,
-    Locale.EN_GB,
-    Locale.EN_AU,
-    Locale.EN_CA,
+    Locale.US,
+    Locale.GB,
+    Locale.AU,
+    Locale.CA,
     Locale.DE,
     Locale.FR,
     Locale.ES,
