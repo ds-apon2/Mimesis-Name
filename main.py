@@ -1,45 +1,8 @@
 from flask import Flask, render_template_string, jsonify
-from mimesis import Person
-from mimesis.locales import Locale
-import random
+from faker import Faker
 
 app = Flask(__name__)
-
-# All supported locales
-LOCALES = [
-    Locale.EN,
-    Locale.US,
-    Locale.GB,
-    Locale.AU,
-    Locale.CA,
-    Locale.DE,
-    Locale.FR,
-    Locale.ES,
-    Locale.IT,
-    Locale.PT,
-    Locale.RU,
-    Locale.TR,
-    Locale.PL,
-    Locale.NL,
-    Locale.SV,
-    Locale.NO,
-    Locale.DA,
-    Locale.FI,
-    Locale.CS,
-    Locale.SK,
-    Locale.HU,
-    Locale.RO,
-    Locale.UK,
-    Locale.KK,
-    Locale.KO,
-    Locale.JA,
-    Locale.ZH,
-]
-
-def random_name():
-    locale = random.choice(LOCALES)
-    person = Person(locale)
-    return person.full_name()
+fake = Faker("en_US")
 
 HTML = """
 <!DOCTYPE html>
@@ -48,7 +11,7 @@ HTML = """
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Name Generator</title>
+<title>US Name Generator</title>
 
 <style>
 *{
@@ -140,7 +103,7 @@ body{
 <div class="card">
 
     <div class="title">
-        Name Generator
+        US Name Generator
     </div>
 
     <div class="name-box" id="name">
@@ -180,14 +143,14 @@ async function changeName(){
 @app.route("/new-name")
 def new_name():
     return jsonify({
-        "name": random_name()
+        "name": fake.name()
     })
 
 @app.route("/")
 def home():
     return render_template_string(
         HTML,
-        name=random_name()
+        name=fake.name()
     )
 
 if __name__ == "__main__":
